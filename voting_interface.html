@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Voting System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #b0e57c;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+        }
+        .voter-profile, .candidates-list {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .voter-profile {
+            border-right: 2px solid gray;
+            padding-right: 20px;
+        }
+        .candidate {
+            border: 1px solid gray;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        .vote-button {
+            background-color: blue;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .voted {
+            background-color: green !important;
+            color: white;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="window.history.back()">Back</button>
+    <h1>Online Voting System</h1>
+    <button onclick="logout()">Logout</button>
+
+    <div class="container">
+        <div class="voter-profile">
+            <div>
+                <img src="voter.png" width="100" alt="Voter">
+                <h3 id="voter-name">Name: Loading...</h3>
+                <p id="voter-mobile">Mobile: </p>
+                <p id="voter-address">Address: </p>
+                <p>Status: <span id="vote-status">Not Voted</span></p>
+            </div>
+        </div>
+
+        <div class="candidates-list" id="candidates-container">
+            <!-- Candidates will be loaded here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        let voterId = 1; // Assume voter is logged in (Replace this with session data)
+
+        // Fetch user data from the backend
+        fetch('fetch_users.php?voter_id=' + voterId)
+            .then(response => response.json())
+            .then(data => {
+                // Display voter
+                document.getElementById("voter-name").innerText = "Name: " + data.voter.name;
+                document.getElementById("voter-mobile").innerText = "Mobile: " + data.voter.mobile;
+                document.getElementById("voter-address").innerText = "Address: " + data.voter.address;
+                
+                // Check if voter has already voted
+                let hasVoted = data.voter.voted_candidate_id !== null;
+                if (hasVoted) {
+                    document.getElementById("vote-status").innerHTML = `<span class="voted">Voted</span>`;
+                }
+
+                // Display candidates
+                let candidatesHTML = "";
+                data.candidates.forEach(candidate => {
+                    let votedClass = (hasVoted && data.voter.voted_candidate_id == candidate.id) ? "voted" : "";
+                    let disabledAttr = hasVoted ? "disabled" : "";
+                    candidatesHTML += `
+                        <div class="candidate">
+                            <h3>Group Name: ${candidate.name}</h3>
+                            <p>Votes: <span id="votes-${candidate.id}">${candidate.votes}</span></p>
+                            <button id="vote-btn-${candidate.id}" class="vote-button ${votedClass}" ${disabledAttr} onclick="vote(${candidate.id})">
+                                ${hasVoted && data.voter.voted_candidate_id == candidate.id ? "Voted" : "Vote"}
+                            </button>
+                        </div>
+                    `;
+                });
+                document.getElementById("candidates-container").innerHTML = candidatesHTML;
+            });
+
+        function vote(candidateId) {
+            fetch('vote.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ voter_id: voterId, candidate_id: candidateId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById("vote-status").innerHTML = `<span class="voted">Voted</span>`;
+                    document.getElementById("vote-btn-" + candidateId).classList.add("voted");
+                    document.getElementById("vote-btn-" + candidateId).innerText = "Voted";
+                    document.getElementById("vote-btn-" + candidateId).disabled = true;
+                } else {
+                    alert("You have already voted!");
+                }
+            });
+        }
+
+        function logout() {
+            window.location.href = "loginnn.html";
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<?php
+include("gurii.php"); // Database connection
+
+// Fetch the election title
+$query = mysqli_query($connect, "SELECT * FROM election_title LIMIT 1");
+$election = mysqli_fetch_assoc($query);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Dashboard - Voting System</title>
+    <link rel="stylesheet" href="user_interface.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+        }
+
+        .dashboard {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: #2C3E50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: #34495E;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+            background-color: #f8f9fa;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .card p {
+            font-size: 28px;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .votes-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .election-title {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .election-title h2 {
+            margin-bottom: 10px;
+            color: #2C3E50;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                text-align: center;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <h2>Voting System</h2>
+            <ul>
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#">Vote</a></li>
+                <li><a href="#">Results</a></li>
+                <li><a href="#">Profile</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <header>
+                <h1>Voter Dashboard</h1>
+                <div class="profile">👤 John Doe</div>
+            </header>
+
+            <!-- Election Title Section -->
+            <div class="election-title">
+                <?php if ($election): ?>
+                    <h2>Election Title: <?php echo htmlspecialchars($election['title']); ?></h2>
+                    <p>Reason: <?php echo nl2br(htmlspecialchars($election['reason'])); ?></p>
+                <?php else: ?>
+                    <p>No election title has been set yet.</p>
+                <?php endif; ?>
+            </div>
+
+            <div class="stats">
+                <div class="card">
+                    <h3>Election Status</h3>
+                    <p>Ongoing</p>
+                </div>
+                <div class="card">
+                    <h3>Total Candidates</h3>
+                    <p>10</p>
+                </div>
+                <div class="card">
+                    <h3>My Vote</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+
+            <div class="votes-section">
+                <h2>Vote Now</h2>
+                <p>Click below to cast your vote.</p>
+                <a href="#" class="button">Vote</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

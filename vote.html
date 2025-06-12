@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Page</title>
+    <style>
+        /* Internal CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .vote-container {
+            margin-top: 30px;
+        }
+
+        .vote-option {
+            margin-bottom: 20px;
+        }
+
+        .vote-option label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .vote-option select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .vote-option h3 {
+            font-size: 16px;
+            color: #444;
+        }
+
+        .vote-option ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .vote-option li {
+            margin-bottom: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, <?php echo htmlspecialchars($user['name']); ?></h1>
+        <h2>Vote Now</h2>
+        <div class="vote-container">
+            <form action="submit_vote.php" method="POST">
+                <?php foreach ($vote_counts as $position_name => $candidates): ?>
+                <div class="vote-option">
+                    <!-- Display the position name -->
+                    <label for="<?php echo strtolower(str_replace(' ', '_', $position_name)); ?>">
+                        <?php echo htmlspecialchars($position_name); ?>
+                    </label>
+
+                    <!-- Dropdown to select candidate -->
+                    <select name="vote_<?php echo strtolower(str_replace(' ', '_', $position_name)); ?>" required>
+                        <option value="">Select Candidate</option>
+                        <?php foreach ($candidates as $candidate_name => $votes): ?>
+                            <option value="<?php echo htmlspecialchars($candidate_name); ?>">
+                                <?php echo htmlspecialchars($candidate_name); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+
+                    <!-- Display vote counts for each candidate under each position -->
+                    <h3>Votes for <?php echo htmlspecialchars($position_name); ?>:</h3>
+                    <ul>
+                        <?php foreach ($candidates as $candidate_name => $votes): ?>
+                            <li><?php echo htmlspecialchars($candidate_name); ?>: <?php echo htmlspecialchars($votes); ?> votes</li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                <?php endforeach; ?>
+
+                <!-- Submit Button -->
+                <button type="submit">Submit Vote</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
