@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Online Voting System</title>
+    <link rel="stylesheet" href="admin-panel.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Panel</h1>
+        <a href="home page.html">Back to Home</a>
+    </header>
+
+    <!-- Admin Button to Generate Code -->
+    <div id="adminBtnContainer">
+        <button id="generateCodeBtn">Generate Admin Code</button>
+    </div>
+
+    <!-- Form to enter the admin code -->
+    <div id="adminLoginForm" style="display: none;">
+        <h2>Enter Admin Code</h2>
+        <input type="text" id="adminCodeInput" maxlength="4" placeholder="Enter 4-Digit Code">
+        <button id="submitCodeBtn">Submit</button>
+        <p id="error-message" class="error" style="color: red;"></p>
+    </div>
+
+    <!-- Hidden chatbox for the admin to enter their reason -->
+    <div id="adminReasonDiv" style="display: none;">
+        <h2>Why did you take this vote?</h2>
+        <textarea id="adminReason" rows="4" cols="50" placeholder="Type your reason here..."></textarea><br>
+        <button id="submitReasonBtn">Submit Reason</button>
+    </div>
+
+    <script src="admin-panel.js"></script>
+</body>
+</html>

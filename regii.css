@@ -1,0 +1,42 @@
+body{
+    text-align: center;
+    background-image: url("regiss.jpeg");
+}
+
+#headerSection{
+    padding: 10px;
+}
+
+#headerSection{
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input{
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#dropbox{
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#btn{
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#Register{
+    padding: 10px;
+    border-radius: 5px;
+    background-color: aquamarine;
+}
+
+#btn1{
+    padding: 10px;
+    border-radius: 5px;
+    background-color: aqua;
+}
+
+
+

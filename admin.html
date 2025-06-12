@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Online Voting System</title>
+    <link rel="stylesheet" href="admin-panel.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <h1>Admin Panel</h1>
+
+        <!-- Display voting reason -->
+        <p>Reason for this vote: <span id="vote-reason"></span></p>
+
+        <!-- Check if voting is started, if so, show result button -->
+        <p>Voting Status: <span id="voting-status"></span></p>
+
+        <a href="result.html" class="result-btn" id="result-btn">View Results</a>
+
+        <!-- Disable other actions if voting has started -->
+        <div id="admin-actions">
+            <button disabled>Add Voter</button>
+            <button disabled>Add Candidate</button>
+        </div>
+    </div>
+
+    <script src="admin-panel.js"></script>
+</body>
+</html>

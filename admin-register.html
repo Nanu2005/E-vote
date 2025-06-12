@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Registration - Online Voting System</title>
+    <link rel="stylesheet" href="admin-register.css">
+</head>
+<body>
+    <div class="register-container">
+        <h1>Set Your Admin Code</h1>
+        <form id="registerForm">
+            <label for="admin-code">Enter a 6-Digit Admin Code:</label>
+            <input type="text" id="admin-code" maxlength="6" required>
+            <label for="reason">Why did you initiate this vote?</label>
+            <textarea id="reason" required></textarea>
+            <button type="submit">Set Code</button>
+        </form>
+        <p id="error-message" class="error"></p>
+    </div>
+
+    <script src="admin-register.js"></script>
+</body>
+</html>

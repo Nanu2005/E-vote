@@ -1,0 +1,44 @@
+<?php
+session_start();
+include("gurii.php"); // Ensure this connects to your DB
+
+$message = ''; // Initialize message variable
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $title = mysqli_real_escape_string($connect, $_POST['title']);
+    $reason = mysqli_real_escape_string($connect, $_POST['reason']);
+    $created_by = $_SESSION['voter_name']; // Assuming the user's name is stored in the session
+
+    // Check if an election title already exists
+    $check = mysqli_query($connect, "SELECT * FROM election_title LIMIT 1");
+
+    if (mysqli_num_rows($check) > 0) {
+        // Update existing title
+        $query = "UPDATE election_title SET title='$title', reason='$reason', created_at=NOW()";
+        $action = 'UPDATE';
+        $message = "Election title updated successfully!";
+    } else {
+        // Insert new title
+        $query = "INSERT INTO election_title (title, reason) VALUES ('$title', '$reason')";
+        $action = 'INSERT';
+        $message = "Election title added successfully!";
+    }
+
+    // Execute the query
+    if (mysqli_query($connect, $query)) {
+        // Log the change in the history table
+        $history_query = "INSERT INTO election_title_history (title, reason, action, created_by) 
+                          VALUES ('$title', '$reason', '$action', '$created_by')";
+        mysqli_query($connect, $history_query);
+
+        $_SESSION['success_message'] = $message;
+    } else {
+        $_SESSION['error_message'] = "Error: " . mysqli_error($connect);
+    }
+}
+
+// Fetch current election title
+$title_result = mysqli_query($connect, "SELECT * FROM election_title ORDER BY created_at DESC LIMIT 1");
+$current_title = mysqli_fetch_assoc($title_result);
+?>

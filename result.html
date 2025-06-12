@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voting Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="result.css">
+</head>
+<body>
+    <div class="result-container">
+        <h1>Voting Results</h1>
+
+        <!-- Display reason for vote -->
+        <p>Reason for this vote: <span id="vote-reason"></span></p>
+
+        <!-- Button to display final result -->
+        <button id="final-result-btn">View Final Results</button>
+
+        <!-- Results section -->
+        <div id="results-table" style="display:none;">
+            <h2>Results Table</h2>
+            <table id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Candidate</th>
+                        <th>Votes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be populated dynamically -->
+                </tbody>
+            </table>
+            <canvas id="resultsChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+
+    <script src="result.js"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link href="stylesheet" rel="stylesheet">
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+        }
+
+        .form-container {
+            margin: 10px;
+        }
+
+        .otpMessage {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Email Input Section -->
+    <div class="form-container">
+        <label for="email">Enter your email:</label>
+        <input type="email" id="email" required>
+        <button onclick="sendOTP()">Send OTP</button>
+    </div>
+
+    <!-- OTP Verification Section -->
+    <div class="form-container">
+        <label for="OTP_inp">Enter OTP:</label>
+        <input type="number" id="OTP_inp" required>
+        <button onclick="verifyOTP()">Verify OTP</button>
+    </div>
+
+    <!-- OTP Display Section (For Reference) -->
+    <div class="otpMessage">
+        <p id="otpMessage"></p>
+    </div>
+
+    <script>
+        let OTP_val;
+        emailjs.init("qCEFWZziAIQLCJYeY"); // Use your correct User ID
+
+        // Function to validate email
+        function isValidEmail(email) {
+            const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return regex.test(email);
+        }
+
+        // Function to send OTP
+        function sendOTP() {
+            const email = document.getElementById('email');
+            const otpMessage = document.getElementById('otpMessage'); // For displaying OTP
+
+            // Validate email format
+            if (!email.value || !isValidEmail(email.value)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+
+            // Generate OTP (6 digits)
+            OTP_val = Math.floor(Math.random() * 1000000);
+            console.log("Generated OTP:", OTP_val); // For debugging purposes
+
+            otpMessage.innerHTML = `<strong>Generated OTP: </strong> ${OTP_val}`; // Display OTP for reference
+
+            const templateParams = {
+                to_email: email.value,
+                otp: OTP_val
+            };
+
+            // Log templateParams to check if the values are correct
+            console.log("Template Params: ", templateParams);
+
+            // Send OTP via EmailJS
+            emailjs.send("service_o2napls", "template_53yur7v", templateParams)
+                .then(function(response) {
+                    console.log("Success", response); // Debugging response
+                    alert("OTP has been sent to your email.");
+                }, function(error) {
+                    console.error("Error sending email:", error); // Log error in console
+                    alert("Error sending email. Please try again.");
+                });
+        }
+
+        // Function to verify OTP entered by user
+        function verifyOTP() {
+            const OTP_inp = document.getElementById("OTP_inp").value; // Get OTP input value
+
+            if (parseInt(OTP_inp) === OTP_val) {
+                alert("OTP verification successful. Registration complete!");
+                document.getElementById('OTP_inp').value = ""; // Clear input field
+            } else {
+                alert("Invalid OTP. Please try again.");
+            }
+        }
+    </script>
+
+</body>
+</html>
